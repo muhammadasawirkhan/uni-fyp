@@ -1,0 +1,111 @@
+<div class="dashboard">
+  <header class="dashboard-header">
+    <h1>Users Overview</h1>
+    <button class="btn-primary" (click)="openAddUserModal()">Add User</button>
+  </header>
+
+  <section class="users-section">
+    <h2>Users</h2>
+    <table class="users-table" *ngIf="users.length > 0; else noUsers">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Username</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Phone</th>
+          <th>Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.fullName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.role }}</td>
+          <td><span [ngClass]="getStatusClass(user.status)">{{ user.status }}</span></td>
+          <td>{{ user.phone || '-' }}</td>
+          <td>{{ user.address || '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #noUsers>
+      <p>No users added yet. Click "Add User" to create one.</p>
+    </ng-template>
+  </section>
+
+  <!-- MODAL -->
+  <div class="modal-backdrop" *ngIf="isAddUserModalOpen">
+    <div class="modal">
+      <button class="modal-close" (click)="closeAddUserModal()">&times;</button>
+
+      <h2>Add New User</h2>
+      <div class="main-container">
+        <div class="step-section">
+      <div class="steps">
+        <div class="step" *ngFor="let step of steps; let i = index" [class.active]="currentStep === i" [class.completed]="i < currentStep">
+          <div class="step-number">{{ i + 1 }}</div>
+          <div class="step-label">{{ step }}</div>
+        </div>
+      </div>
+      </div>
+      <div class="form-section">
+      <form [formGroup]="addUserForm" (ngSubmit)="submitAddUser()">
+        <div *ngIf="currentStep === 0">
+          <label>Full Name<input formControlName="fullName" type="text" /></label>
+          <label>Email<input formControlName="email" type="email" /></label>
+        </div>
+
+        <div *ngIf="currentStep === 1">
+          <label>Username<input formControlName="username" type="text" /></label>
+          <label>Password<input formControlName="password" type="password" /></label>
+        </div>
+
+        <div *ngIf="currentStep === 2">
+          <label>Role
+            <select formControlName="role">
+              <option value="">Select role</option>
+              <option value="admin">Admin</option>
+              <option value="manager">Manager</option>
+              <option value="user">User</option>
+            </select>
+          </label>
+          <label>Status
+            <select formControlName="status">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </label>
+        </div>
+
+        <div *ngIf="currentStep === 3">
+          <label>Phone<input formControlName="phone" type="tel" /></label>
+          <label>Address<textarea formControlName="address"></textarea></label>
+        </div>
+
+        <div *ngIf="currentStep === 4">
+          <h3>Review</h3>
+          <p><strong>Name:</strong> {{ addUserForm.value.fullName }}</p>
+          <p><strong>Email:</strong> {{ addUserForm.value.email }}</p>
+          <p><strong>Username:</strong> {{ addUserForm.value.username }}</p>
+          <p><strong>Role:</strong> {{ addUserForm.value.role }}</p>
+          <p><strong>Status:</strong> {{ addUserForm.value.status }}</p>
+          <p><strong>Phone:</strong> {{ addUserForm.value.phone }}</p>
+          <p><strong>Address:</strong> {{ addUserForm.value.address }}</p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" (click)="prevStep()" [disabled]="currentStep === 0">Back</button>
+          <button type="button" (click)="nextStep()" *ngIf="currentStep < steps.length - 1">Next</button>
+          <button type="submit" *ngIf="currentStep === steps.length - 1">Submit</button>
+        </div>
+      </form>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

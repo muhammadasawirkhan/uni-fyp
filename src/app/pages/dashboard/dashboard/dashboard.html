@@ -1,0 +1,170 @@
+<!-- <div class="dashboard-layout">
+  <aside class="sidebar">
+    <h3>My App</h3>
+    <nav>
+      <a routerLink="/dashboard/overview" routerLinkActive="active">Overview</a>
+      <a routerLink="/dashboard/settings" routerLinkActive="active">Settings</a>
+      <a (click)="auth.logout()">Logout</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    CHILD ROUTES RENDER HERE -->
+<!-- <router-outlet></router-outlet>
+  </main>
+</div> --> 
+
+
+<div class="dashboard">
+  <header class="dashboard-header">
+    <h1>Users Overview</h1>
+    <button class="btn-primary" (click)="openAddUserModal()">Add User</button>
+  </header>
+
+  <!-- USERS TABLE -->
+  <section class="users-section">
+    <h2>Users</h2>
+
+    <table class="users-table" *ngIf="users.length > 0; else noUsers">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Username</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Phone</th>
+          <th>Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.fullName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.role }}</td>
+          ...
+          <span [ngClass]="getStatusClass(user.status)">
+            {{ user.status }}
+          </span>
+          <td>{{ user.phone || '-' }}</td>
+          <td>{{ user.address || '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #noUsers>
+      <p class="empty-text">No users added yet. Click "Add User" to create one.</p>
+    </ng-template>
+  </section>
+
+  <!-- MODAL OVERLAY -->
+  <div class="modal-backdrop" *ngIf="isAddUserModalOpen">
+    <div class="modal">
+      <button class="modal-close" (click)="closeAddUserModal()">&times;</button>
+
+      <h2>Add New User</h2>
+
+      <!-- STEP INDICATOR / PROGRESS BAR -->
+      <div class="steps">
+        <div class="step" *ngFor="let step of steps; let i = index" [class.active]="currentStep === i"
+          [class.completed]="i < currentStep">
+          <div class="step-number">{{ i + 1 }}</div>
+          <div class="step-label">{{ step }}</div>
+        </div>
+      </div>
+
+      <!-- STEP CONTENT -->
+      <form [formGroup]="addUserForm" (ngSubmit)="submitAddUser()">
+        <!-- STEP 1: Basic Info -->
+        <div *ngIf="currentStep === 0" class="step-content">
+          <label>
+            Full Name
+            <input formControlName="fullName" type="text" />
+          </label>
+
+          <label>
+            Email
+            <input formControlName="email" type="email" />
+          </label>
+        </div>
+
+        <!-- STEP 2: Account Details -->
+        <div *ngIf="currentStep === 1" class="step-content">
+          <label>
+            Username
+            <input formControlName="username" type="text" />
+          </label>
+
+          <label>
+            Password
+            <input formControlName="password" type="password" />
+          </label>
+        </div>
+
+        <!-- STEP 3: Role & Status -->
+        <div *ngIf="currentStep === 2" class="step-content">
+          <label>
+            Role
+            <select formControlName="role">
+              <option value="">Select role</option>
+              <option value="admin">Admin</option>
+              <option value="manager">Manager</option>
+              <option value="user">User</option>
+            </select>
+          </label>
+
+          <label>
+            Status
+            <select formControlName="status">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </label>
+        </div>
+
+        <!-- STEP 4: Contact Info -->
+        <div *ngIf="currentStep === 3" class="step-content">
+          <label>
+            Phone
+            <input formControlName="phone" type="tel" />
+          </label>
+
+          <label>
+            Address
+            <textarea formControlName="address"></textarea>
+          </label>
+        </div>
+
+        <!-- STEP 5: Review -->
+        <div *ngIf="currentStep === 4" class="step-content review">
+          <h3>Review Details</h3>
+          <p><strong>Name:</strong> {{ addUserForm.value.fullName }}</p>
+          <p><strong>Email:</strong> {{ addUserForm.value.email }}</p>
+          <p><strong>Username:</strong> {{ addUserForm.value.username }}</p>
+          <p><strong>Role:</strong> {{ addUserForm.value.role }}</p>
+          <p><strong>Status:</strong> {{ addUserForm.value.status }}</p>
+          <p><strong>Phone:</strong> {{ addUserForm.value.phone }}</p>
+          <p><strong>Address:</strong> {{ addUserForm.value.address }}</p>
+        </div>
+
+        <!-- NAVIGATION BUTTONS -->
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="prevStep()" [disabled]="currentStep === 0">
+            Back
+          </button>
+
+          <button type="button" class="btn-secondary" (click)="nextStep()" *ngIf="currentStep < steps.length - 1">
+            Next
+          </button>
+
+          <button type="submit" class="btn-primary" *ngIf="currentStep === steps.length - 1">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+.dashboard-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 1rem;
+ }
+.users-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-bottom: 1rem; 
+}
+.users-table th, .users-table td { 
+    border: 1px solid #ddd; 
+    padding: 0.5rem; }
+
+.status-badge.active { 
+    color: green; 
+    font-weight: bold;
+}
+
+.status-badge.inactive {
+    color: red; 
+    font-weight: bold; 
+}
+.modal-backdrop {
+    position: fixed; 
+    inset: 0; 
+    background: rgba(0,0,0,0.5); 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+.modal { 
+    background: #fff; 
+    padding: 1rem; 
+    border-radius: 8px; 
+    width: 1400px; 
+    max-width: 80%; 
+    // display: flex;
+}
+.main-container{
+display: flex;
+}
+.form-section{
+
+
+}
+.step-section{
+
+}
+.modal-close { 
+    float: right; 
+    background: none; 
+    border: none; 
+    font-size: 2.5rem; 
+    cursor: pointer; 
+
+}
+.steps { 
+    display: flex; 
+    flex-direction: column;
+    justify-content: space-between; 
+    margin-bottom: 1rem; 
+}
+.step { 
+    text-align: center; 
+    flex: 1; 
+}
+.step-number { 
+    width: 24px; 
+    height: 24px; 
+    border-radius: 50%; 
+    background: #ccc; 
+    margin: 0 auto; 
+    line-height: 24px; 
+}
+.step.active .step-number { 
+    background: #00bfff; 
+    color: #fff; 
+}
+.step.completed .step-number { 
+    background: green; 
+    color: #fff; 
+}
+.modal-footer { 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 0.5rem; 
+    margin-top: 1rem; 
+}

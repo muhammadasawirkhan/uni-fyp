@@ -1,0 +1,36 @@
+<div class="auth-card">
+  <h2>Create Account</h2>
+  <form class="login-form" [formGroup]="form" (ngSubmit)="submit()">
+    <div>
+      <label>Full Name</label>
+      <input formControlName="name" type="text" />
+      <div *ngIf="isInvalid('name', 'required')">Name is required</div>
+      <div *ngIf="isInvalid('name', 'minlength')">Name must be at least 3 characters</div>
+    </div>
+
+    <div>
+      <label>Email</label>
+      <input formControlName="email" type="email" />
+      <div *ngIf="isInvalid('email', 'required')">Email is required</div>
+      <div *ngIf="isInvalid('email', 'email')">Invalid email format</div>
+    </div>
+
+    <div>
+      <label>Password</label>
+      <input formControlName="password" type="password" />
+      <div *ngIf="isInvalid('password', 'required')">Password required</div>
+      <div *ngIf="isInvalid('password', 'minlength')">Password must be 6+ characters</div>
+    </div>
+
+    <div>
+      <label>Confirm Password</label>
+      <input formControlName="confirmPassword" type="password" />
+      <div *ngIf="isInvalid('confirmPassword', 'required')">Please confirm your password</div>
+    </div>
+
+    <button type="submit" [disabled]="loading || form.invalid">Sign up</button>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+    <p>Already have an account? <a routerLink="/auth/login">Sign in</a></p>
+  </form>
+</div>
